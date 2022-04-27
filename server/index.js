@@ -16,13 +16,13 @@ server.use(`${baseUrl}/docs`, express.static('docs/_site', {
 server.use(`${baseUrl}/assets`, express.static('assets'));
 
 server.get(`${baseUrl}/api/drinks`, (req, res) => {
-  const serverUrl = process.env.SERVER_URL ?? req.get('host');
+  const serverUrl = process.env.SERVER_URL ?? `${req.protocol}://${req.get('host')}`;
   
   res.json({
     status: 'success',
     results: drinks.map((drink) => ({
       ...drink,
-      image: `${req.protocol}://${serverUrl}${baseUrl}/assets/cups/${drink.id}.png`,
+      image: `${serverUrl}${baseUrl}/assets/cups/${drink.id}.png`,
     })),
   })
 });
