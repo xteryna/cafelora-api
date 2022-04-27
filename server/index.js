@@ -13,10 +13,15 @@ server.use(`${baseUrl}/docs`, express.static('docs/_site', {
   extensions: ['html'],
 }));
 
+server.use(`${baseUrl}/assets`, express.static('assets'));
+
 server.get(`${baseUrl}/api/drinks`, (req, res) => {
   res.json({
     status: 'success',
-    results: drinks,
+    results: drinks.map((drink) => ({
+      ...drink,
+      image: `${req.protocol}://${req.get('host')}${baseUrl}/assets/cups/${drink.id}.png`,
+    })),
   })
 });
 
