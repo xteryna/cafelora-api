@@ -1,0 +1,32 @@
+{
+  "name": "cafelora-api",
+  "version": "1.0.0",
+  "description": "API for the Cafe Lóra training project",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "build:docs": "cd docs && bundler exec jekyll b -c _config.server.yml && cd -",
+    "dev:docs": "cd docs && bundler exec jekyll b -c _config.server.yml -w",
+    "dev:server": "nodemon server/index.js",
+    "start": "npm run build:docs && node server/index.js",
+    "dev": "concurrently npm:dev:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Czechitas-podklady-WEB/cafelora-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Czechitas-podklady-WEB/cafelora-api/issues"
+  },
+  "homepage": "https://github.com/Czechitas-podklady-WEB/cafelora-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "nodemon": "^2.0.15"
+  }
+}
