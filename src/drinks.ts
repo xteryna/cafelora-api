@@ -1,4 +1,36 @@
-const products = [
+import { fail, Results, success } from "./nanorest.js";
+
+export type Layer = (
+  | 'espresso'
+  | 'water'
+  | 'milk'
+  | 'milk_foam'
+  | 'liquor'
+  | 'whipped_cream'
+  | 'lemon'
+  | 'steamed_milk'
+  | 'chocolate'
+  | 'ice_cream'
+  | 'half_and_half'
+  | 'cream'
+  | 'vanilla_sugar'
+  | 'honey'
+);
+
+export interface Product {
+  id: string,
+  name: string,
+  layers: Layer[],
+};
+
+export interface LayerDetail {
+  color: string,
+  label: string,
+}
+
+export type Layers = { [L in Layer]: LayerDetail };
+
+const products: Product[] = [
   { id: 'espresso', name: 'Espresso', layers: ['espresso'] },
   { id: 'doppio', name: 'Doppio', layers: ['espresso'] },
   { id: 'lungo', name: 'Lungo', layers: ['water', 'espresso'] },
@@ -29,7 +61,7 @@ const products = [
   { id: 'chocolate-milk', name: 'Čokoláda s mlékem', layers: ['milk', 'chocolate'] }
 ]
 
-const allLayers = {
+const allLayers: Layers = {
   'espresso': {
     color: '#613916',
     label: 'espresso'
@@ -85,14 +117,33 @@ const allLayers = {
   'honey': {
     color: '#ffb603',
     label: 'med'
-  }
+  },
+};
+
+export interface Drink {
+  id: string,
+  name: string,
+  ordered: boolean,
+  layers: LayerDetail[],
 }
 
-const drinks = products.map(({ id, name, layers }) => ({
-  id, 
-  name, 
-  ordered: false,
-  layers: layers.map((layerId) => allLayers[layerId]),
-}));
+export const drinks = (serverUrl: string, orders: string[] = []): Drink[] => (
+  products.map(({ id, name, layers }) => ({
+    id, 
+    name, 
+    ordered: orders.includes(id),
+    layers: layers.map((layerId) => allLayers[layerId]),
+    image: `${serverUrl}/assets/cups/${id}.png`,
+  }))
+);
 
-export default drinks;
+export const findDrink = (
+  id: string, serverUrl: string, orders: string[]
+): Results<Drink, 'not-found'> => {
+  const drink = drinks(serverUrl, orders).find((drink) => drink.id === id);
+  if (drink === undefined) {
+    return fail('not-found');
+  }
+
+  return success(drink);
+}
