@@ -1,4 +1,5 @@
 import { fail, Results, success } from "./nanorest.js";
+import { User } from "./users.js";
 
 export type Layer = (
   | 'espresso'
@@ -125,25 +126,33 @@ export interface Drink {
   name: string,
   ordered: boolean,
   layers: LayerDetail[],
+  image: string,
 }
 
-export const drinks = (serverUrl: string, orders: string[] = []): Drink[] => (
+export const createDrinks = (appUrl: string): Drink[] => (
   products.map(({ id, name, layers }) => ({
     id, 
     name, 
-    ordered: orders.includes(id),
+    ordered: false,
     layers: layers.map((layerId) => allLayers[layerId]),
-    image: `${serverUrl}/assets/cups/${id}.png`,
+    image: `${appUrl}/assets/cups/${id}.png`,
   }))
 );
 
-export const findDrink = (
-  id: string, serverUrl: string, orders: string[]
+export const getUserDrinks = (drinks: Drink[], user: User): Drink[] => drinks.map(
+  (drink) => ({ ...drink, ordered: user.orders.includes(drink.id)})
+);
+
+export const findUserDrink = (
+  drinks: Drink[], id: string, user: User,
 ): Results<Drink, 'not-found'> => {
-  const drink = drinks(serverUrl, orders).find((drink) => drink.id === id);
+  const drink = drinks.find((drink) => drink.id === id);
   if (drink === undefined) {
     return fail('not-found');
   }
 
-  return success(drink);
+  return success({
+    ...drink,
+    ordered: user.orders.includes(id),
+  });
 }

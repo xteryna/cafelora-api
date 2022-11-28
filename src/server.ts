@@ -2,12 +2,14 @@ import cors from 'cors';
 import express from 'express';
 import isEmail from 'validator/lib/isEmail.js';
 import { body } from 'express-validator';
-import { Drink, drinks, findDrink } from './drinks.js';
+import { createDrinks, Drink, findUserDrink, getUserDrinks } from './drinks.js';
 import { getUser, users } from './users.js';
 import { nanorest, Success, success } from './nanorest.js';
 
 const port = process.env.PORT ?? 4000;
 const baseUrl = process.env.BASE_URL ?? '';
+
+const drinks = createDrinks(`${process.env.SERVER_URL ?? ''}${baseUrl}`);
 
 const server = express();
 server.use(express.json());
@@ -24,7 +26,6 @@ const rest = nanorest({
 });
 
 server.use(`${baseUrl}/api/me`, (req, res, next) => {
-  console.log('auth1');
   const auth = req.header('Authorization');
 
   if (auth === undefined) {
@@ -34,8 +35,6 @@ server.use(`${baseUrl}/api/me`, (req, res, next) => {
     });
     return;
   }
-
-  console.log('auth2');
 
   if (auth.startsWith('Email ')) {
     const email = auth.slice(6);
@@ -47,7 +46,6 @@ server.use(`${baseUrl}/api/me`, (req, res, next) => {
       return;
     }
 
-    console.log('auth3');
     req.user = getUser(email);
     next();
     return;
@@ -62,9 +60,7 @@ server.use(`${baseUrl}/api/me`, (req, res, next) => {
 server.get(
   `${baseUrl}/api/me/drinks`,
   rest.resource('drinks', (req) => {
-    return success(
-      drinks(process.env.SERVER_URL ?? '', req.user?.orders),
-    );
+    return success(getUserDrinks(drinks, req.user!));
   })
 );
 
@@ -72,32 +68,29 @@ server.get(
   `${baseUrl}/api/me/drinks/:id`,
   rest.resource('drink', (req) => {
     const { id } = req.params;
-    return findDrink(
-      id, process.env.SERVER_URL ?? '', req.user!.orders
-    ).ifFail(() => ({
-      httpStatus: 404,
-      errors: [`Cannot find drink with id '${id}'`],
-    }));
+    return findUserDrink(drinks, id, req.user!)
+      .ifFail(() => ({
+        httpStatus: 404,
+        errors: [`Cannot find drink with id '${id}'`],
+      }));
   })
 );
 
 server.patch(
   `${baseUrl}/api/me/drinks/:id`,
-  body('ordered').isBoolean(),
+  body('ordered').not().isString().isBoolean(),
   rest.resource('drink', (req) => {
-    console.log('patch');
     const { id } = req.params;
     const { ordered } = req.body;
-    const orders = req.user!.orders;
+    const { orders } = req.user!;
 
-    return findDrink(id, process.env.SERVER_URL ?? '', req.user!.orders)
+    return findUserDrink(drinks, id, req.user!)
       .ifSuccess((drink): Drink => {
-        console.log(drink);
         if (ordered === true) {
           orders.push(id);
         } else {
           const index = orders.indexOf(id);
-          req.user!.orders.splice(index, 1);
+          orders.splice(index, 1);
         }
         return { ...drink, ordered };
       })
@@ -105,6 +98,13 @@ server.patch(
         httpStatus: 404,
         errors: [`Cannot find drink with id '${id}'`],
       }));
+  })
+);
+
+server.get(
+  `${baseUrl}/api/admin/users`,
+  rest.resource('drink', () => {
+    return success(users);
   })
 );
 

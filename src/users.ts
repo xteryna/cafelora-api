@@ -1,3 +1,5 @@
+import { Drink } from "./drinks.js";
+
 export interface User {
   email: string,
   orders: string[],
