@@ -17,8 +17,8 @@ export const getUser = (email: string): User => {
 
   if (user === undefined) {
     user = { email, orders: []};
+    users.push(user);
   }
 
-  users.push(user);
   return user;
 };

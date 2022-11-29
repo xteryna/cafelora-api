@@ -33,7 +33,7 @@ The server will create a new account for every new e-mail automatically.
 {{ site.apibase }}/me/drinks/{drinkId}
 ```
 
-Return the drink with id `drinkId`.
+Returns the drink with id `drinkId`.
 
 ## Make order [PATCH]
 
@@ -47,5 +47,8 @@ Body:
 {
   "ordered": true
 }
+```
 
-Makes an order of drink with id `drinkId`. You can send `true` to order a drink or `false` to cancel the order.
+Makes an order of the drink with id `drinkId`. You can send `true` to order a drink or `false` to cancel the order. 
+
+The endpoint returns the updated drink.
