@@ -86,6 +86,10 @@ server.patch(
 
     return findUserDrink(drinks, id, req.user!)
       .ifSuccess((drink): Drink => {
+        if (ordered === drink.ordered) {
+          return drink;
+        }
+        
         if (ordered === true) {
           orders.push(id);
         } else {
