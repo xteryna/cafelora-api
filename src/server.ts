@@ -89,7 +89,7 @@ server.patch(
         if (ordered === drink.ordered) {
           return drink;
         }
-        
+
         if (ordered === true) {
           orders.push(id);
         } else {
@@ -107,7 +107,7 @@ server.patch(
 
 server.get(
   `${baseUrl}/api/admin/users`,
-  rest.resource('drink', () => {
+  rest.resource('users', () => {
     return success(users);
   })
 );
