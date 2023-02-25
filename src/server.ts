@@ -116,6 +116,10 @@ server.get(
 
 server.use('/', express.static('frontend/dist'));
 
+server.get('*', (req, resp) => {
+  resp.sendFile('index.html', { root: 'frontend/dist' });
+});
+
 server.listen(port, () => {
   console.log(`listening on ${port}...`);
 });
