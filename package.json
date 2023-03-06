@@ -7,7 +7,7 @@
   "scripts": {
     "build:docs": "cd docs && npx @11ty/eleventy",
     "build:api": "tsc",
-    "build:frontend": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm install && npm run build",
     "build": "npm run build:docs && npm run build:api && npm run build:frontend",
     "dev:docs": "cd docs && npx @11ty/eleventy --serve",
     "dev:server": "tsc -w",
