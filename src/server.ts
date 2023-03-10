@@ -1,6 +1,5 @@
 import cors from 'cors';
 import express from 'express';
-import isEmail from 'validator/lib/isEmail.js';
 import { body } from 'express-validator';
 import { createDrinks, Drink, findUserDrink, getUserDrinks } from './drinks.js';
 import { getUser, users } from './users.js';
