@@ -4,8 +4,10 @@ import isEmail from 'validator/lib/isEmail.js';
 import { body } from 'express-validator';
 import { createDrinks, Drink, findUserDrink, getUserDrinks } from './drinks.js';
 import { getUser, users } from './users.js';
-import { nanorest, Success, success } from './nanorest.js';
+import { success } from './typephoon.js';
+import { ApiError, nanorest } from './nanorest.js';
 import * as dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -27,7 +29,7 @@ const rest = nanorest({
   serverUrl: process.env.SERVER_URL ?? '',
 });
 
-server.use('/api/me', (req, res, next) => {
+server.use('/api/me', async (req, res, next) => {
   const auth = req.header('Authorization');
 
   if (auth === undefined) {
@@ -38,17 +40,35 @@ server.use('/api/me', (req, res, next) => {
     return;
   }
 
-  if (auth.startsWith('Email ')) {
-    const email = auth.slice(6);
-    if (!isEmail(email)) {
-      res.status(403).send({
-        status: 'error',
-        errors: ['Not a valid email adress in authorization'],
+  if (auth.startsWith('Bearer ')) {
+    const token = auth.slice(7);
+    
+    const response = await axios.get('https://kodim.cz/api/me', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      validateStatus: () => true,
+    });
+    
+    if(response.status === 401) {
+      res.status(401).send({
+        status: 'unauthorized',
+        errors: ['Authorization token was rejected by kodim.cz']
+      });
+      return;
+    } 
+    
+    if (response.status !== 200) {
+      res.status(500).send({
+        status: 'server error',
+        errors: [
+          'Unknown server error when autheticating agains kodim.cz'
+        ]
       });
       return;
     }
 
-    req.user = getUser(email);
+    req.user = getUser(response.data.email);
     next();
     return;
   }
@@ -70,11 +90,10 @@ server.get(
   '/api/me/drinks/:id',
   rest.resource('drink', (req) => {
     const { id } = req.params;
-    return findUserDrink(drinks, id, req.user!)
-      .ifFail(() => ({
-        httpStatus: 404,
-        errors: [`Cannot find drink with id '${id}'`],
-      }));
+    return findUserDrink(drinks, id, req.user!).mapErr(() => ({
+      httpStatus: 404,
+      errors: [`Cannot find drink with id '${id}'`],
+    }) as ApiError);
   })
 );
 
@@ -86,24 +105,22 @@ server.patch(
     const { ordered } = req.body;
     const { orders } = req.user!;
 
-    return findUserDrink(drinks, id, req.user!)
-      .ifSuccess((drink): Drink => {
-        if (ordered === drink.ordered) {
-          return drink;
-        }
+    return findUserDrink(drinks, id, req.user!).map((drink): Drink => {
+      if (ordered === drink.ordered) {
+        return drink;
+      }
 
-        if (ordered === true) {
-          orders.push(id);
-        } else {
-          const index = orders.indexOf(id);
-          orders.splice(index, 1);
-        }
-        return { ...drink, ordered };
-      })
-      .ifFail(() => ({
-        httpStatus: 404,
-        errors: [`Cannot find drink with id '${id}'`],
-      }));
+      if (ordered === true) {
+        orders.push(id);
+      } else {
+        const index = orders.indexOf(id);
+        orders.splice(index, 1);
+      }
+      return { ...drink, ordered };
+    }).mapErr(() => ({
+      httpStatus: 404,
+      errors: [`Cannot find drink with id '${id}'`],
+    }));
   })
 );
 

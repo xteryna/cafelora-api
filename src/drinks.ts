@@ -1,4 +1,4 @@
-import { fail, Results, success } from "./nanorest.js";
+import { success, fail, Result } from "./typephoon.js";
 import { User } from "./users.js";
 
 export type Layer = (
@@ -145,7 +145,7 @@ export const getUserDrinks = (drinks: Drink[], user: User): Drink[] => drinks.ma
 
 export const findUserDrink = (
   drinks: Drink[], id: string, user: User,
-): Results<Drink, 'not-found'> => {
+): Result<Drink, 'not-found'> => {
   const drink = drinks.find((drink) => drink.id === id);
   if (drink === undefined) {
     return fail('not-found');
