@@ -1,4 +1,4 @@
-import { success, fail, Result } from "./typephoon.js";
+import { success, fail, Result } from "typephoon/result";
 import { User } from "./users.js";
 
 export type Layer = (

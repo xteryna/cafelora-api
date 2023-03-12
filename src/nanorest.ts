@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from "express";
 import { validationResult } from "express-validator";
-import { Result } from "./typephoon";
+import { Result } from 'typephoon/result';
 
 export interface ApiResourceRef {
   type: string,

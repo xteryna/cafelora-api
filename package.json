@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "build:docs": "cd docs && npx @11ty/eleventy",
-    "build:api": "tsc",
-    "build": "npm run build:docs && npm run build:api",
+    "build:api": "rm -rf dist && tsc",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:docs && npm run build:frontend && npm run build:api",
     "dev:docs": "cd docs && npx @11ty/eleventy --serve",
     "dev:server": "tsc -w",
     "start": "node dist/server.js",
     "dev": "concurrently npm:dev:*",
-    "postinstall": "npm install --prefix frontend && cd frontend && npm run build"
+    "postinstall": "npm install --prefix frontend"
   },
   "engines": {
     "node": ">= 14.0.0",
@@ -35,7 +36,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.17.3",
     "express-validator": "^6.14.2",
-    "nanoid": "^3.3.3"
+    "nanoid": "^3.3.3",
+    "typephoon": "^0.1.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",

@@ -3,7 +3,7 @@ import express from 'express';
 import { body } from 'express-validator';
 import { createDrinks, Drink, findUserDrink, getUserDrinks } from './drinks.js';
 import { getUser, users } from './users.js';
-import { success } from './typephoon.js';
+import { success } from 'typephoon/result';
 import { ApiError, nanorest } from './nanorest.js';
 import * as dotenv from 'dotenv';
 import axios from 'axios';
