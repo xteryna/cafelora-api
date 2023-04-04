@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from "express";
 import { validationResult } from "express-validator";
-import { Result } from 'typephoon/result';
+import { Result } from 'monadix/result';
 
 export interface ApiResourceRef {
   type: string,

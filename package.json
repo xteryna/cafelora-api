@@ -31,13 +31,14 @@
   "homepage": "https://github.com/Czechitas-podklady-WEB/cafelora-api#readme",
   "dependencies": {
     "@11ty/eleventy": "^2.0.0",
+    "@kodim/auth": "^1.0.0",
     "axios": "^1.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.3",
     "express-validator": "^6.14.2",
-    "nanoid": "^3.3.3",
-    "typephoon": "^0.1.1"
+    "monadix": "^0.1.4",
+    "nanoid": "^3.3.3"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
