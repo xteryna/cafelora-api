@@ -31,8 +31,8 @@ server.use('/api/me', kodimAuth());
 
 server.get(
   '/api/me/drinks',
-  api.resource({
-    type: 'drinks',
+  api.endpoint({
+    resourceType: 'drinks',
     handler: (req) => {
       const user = getUser(req.user!.email);
       return success(getUserDrinks(drinks, user));
@@ -42,8 +42,8 @@ server.get(
 
 server.get(
   '/api/me/drinks/:id',
-  api.resource({
-    type: 'drink',
+  api.endpoint({
+    resourceType: 'drink',
     handler: (req) => {
       const user = getUser(req.user!.email);
       const { id } = req.params;
@@ -56,9 +56,9 @@ server.get(
 
 server.patch(
   '/api/me/drinks/:id',
-  api.resource({
-    type: 'drink',
-    validation: z.object({
+  api.endpoint({
+    resourceType: 'drink',
+    bodySchema: z.object({
       ordered: z.boolean({
         required_error: 'ordered is required',
         invalid_type_error: 'ordered must be a boolean',
@@ -91,8 +91,8 @@ server.patch(
 
 server.get(
   '/api/admin/users',
-  api.resource({
-    type: 'users',
+  api.endpoint({
+    resourceType: 'users',
     handler: () => success(users),
   })
 );
