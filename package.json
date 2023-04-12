@@ -7,18 +7,16 @@
   "scripts": {
     "build:docs": "cd docs && npx @11ty/eleventy",
     "build:api": "rm -rf dist && tsc",
-    "build:frontend": "cd frontend && npm run build",
-    "build": "npm run build:docs && npm run build:frontend && npm run build:api",
+    "build": "npm run build:docs && npm run build:api",
     "dev:docs": "cd docs && npx @11ty/eleventy --serve",
     "dev:server": "tsc -w",
-    "test:api": "mocha -r dotenv/config",
+    "test": "mocha -r dotenv/config",
     "start": "node dist/index.js",
-    "dev": "concurrently npm:dev:*",
-    "postinstall": "npm install --prefix frontend"
+    "dev": "concurrently npm:dev:*"
   },
   "engines": {
-    "node": ">= 14.0.0",
-    "npm": ">= 6.0.0"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "repository": {
     "type": "git",
