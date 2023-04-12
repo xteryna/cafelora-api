@@ -1,3 +1,3 @@
-# Café Lora App
+# Café Lóra API
 
-Web application of the Cafe Lóra training project
+API k cvičné webové aplikaci Café Lóra
