@@ -9,10 +9,10 @@ Documentation for all the endpoints for Café Lóra API.
 
 ## Authentication
           
-To authenticate use the Authorization header with value:
+To authenticate use your kodim.cz apps token:
           
 ```
-Email your.email@example.com
+Bearer your-token-here
 ```
           
 The server will automatically create new account for every new e-mail.
