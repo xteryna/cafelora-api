@@ -2,7 +2,7 @@
   {
     "id": 0,
     "name": "Espresso",
-    "ordered": false,
+    "ordered": true,
     "layers": [
       {
         "color": "#613916",
