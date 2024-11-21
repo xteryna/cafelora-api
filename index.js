@@ -11,48 +11,59 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(cors());
 
-// Statické soubory (pro obrázky)
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
 // Cesta k JSON souboru
 const dataPath = path.join(__dirname, 'api/drinks.json');
 
 // Načtení JSON dat
 const getDrinksData = () => JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 
-// Endpoint pro získání všech nápojů
+// Uložení JSON dat
+const saveDrinksData = (data) => {
+  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+};
+
+// 1. Endpoint: Získání všech nápojů
 app.get('/api/drinks', (req, res) => {
   const drinks = getDrinksData();
   res.json(drinks);
 });
 
-// Endpoint pro získání nápojů podle filtru
-app.get('/api/drinks/filter', (req, res) => {
-  const { ordered } = req.query; // Příklad: /api/drinks/filter?ordered=true
+// 2. Endpoint: Vytvoření nového nápoje
+app.post('/api/drinks', (req, res) => {
   const drinks = getDrinksData();
-  const filteredDrinks = drinks.filter((item) => String(item.ordered) === ordered);
-  res.json(filteredDrinks);
+  const newDrink = {
+    id: drinks.length ? drinks[drinks.length - 1].id + 1 : 1,
+    ...req.body,
+  };
+  drinks.push(newDrink);
+  saveDrinksData(drinks);
+  res.status(201).json(newDrink);
 });
 
-// Endpoint pro aktualizaci hodnoty "ordered"
+// 3. Endpoint: Aktualizace libovolné vlastnosti nápoje
 app.patch('/api/drinks/:id', (req, res) => {
   const drinks = getDrinksData();
   const { id } = req.params;
-  const { ordered } = req.body;
-
   const drink = drinks.find((item) => item.id === parseInt(id, 10));
+
   if (!drink) {
     return res.status(404).json({ message: 'Drink not found' });
   }
 
-  drink.ordered = ordered;
-
-  // Uložit zpět do souboru
-  fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
-
-  res.json({ message: 'Drink updated successfully', drink });
+  Object.assign(drink, req.body);
+  saveDrinksData(drinks);
+  res.json(drink);
 });
 
+// 4. Endpoint: Smazání nápoje
+app.delete('/api/drinks/:id', (req, res) => {
+  let drinks = getDrinksData();
+  const { id } = req.params;
+
+  drinks = drinks.filter((item) => item.id !== parseInt(id, 10));
+  saveDrinksData(drinks);
+  res.json({ message: 'Drink deleted successfully' });
+});
 
 // Start serveru
 app.listen(PORT, () => {
