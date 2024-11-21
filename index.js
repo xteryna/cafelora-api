@@ -35,7 +35,7 @@ app.get('/api/drinks/filter', (req, res) => {
 });
 
 // Endpoint pro aktualizaci hodnoty "ordered"
-app.post('/api/drinks/:id', (req, res) => {
+app.patch('/api/drinks/:id', (req, res) => {
   const drinks = getDrinksData();
   const { id } = req.params;
   const { ordered } = req.body;
@@ -52,6 +52,7 @@ app.post('/api/drinks/:id', (req, res) => {
 
   res.json({ message: 'Drink updated successfully', drink });
 });
+
 
 // Start serveru
 app.listen(PORT, () => {
