@@ -9,7 +9,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/espresso.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/espresso.png"
   },
   {
     "id": 1,
@@ -21,7 +21,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/doppio.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/doppio.png"
   },
   {
     "id": 2,
@@ -37,7 +37,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/lungo.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/lungo.png"
   },
   {
     "id": 3,
@@ -49,7 +49,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/ristretto.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/ristretto.png"
   },
   {
     "id": 4,
@@ -65,7 +65,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/macchiato.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/macchiato.png"
   },
   {
     "id": 5,
@@ -81,7 +81,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/corretto.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/corretto.png"
   },
   {
     "id": 6,
@@ -97,7 +97,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/con-panna.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/con-panna.png"
   },
   {
     "id": 7,
@@ -113,7 +113,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/romano.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/romano.png"
   },
   {
     "id": 8,
@@ -133,7 +133,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/cappuccino.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/cappuccino.png"
   },
   {
     "id": 9,
@@ -149,7 +149,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/americano.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/americano.png"
   },
   {
     "id": 10,
@@ -169,7 +169,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/cafe-late.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/cafe-late.png"
   },
   {
     "id": 11,
@@ -185,7 +185,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/flat-white.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/flat-white.png"
   },
   {
     "id": 12,
@@ -205,7 +205,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/marocchino.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/marocchino.png"
   },
   {
     "id": 13,
@@ -229,7 +229,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/mocha.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/mocha.png"
   },
   {
     "id": 14,
@@ -253,7 +253,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/bicerin.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/bicerin.png"
   },
   {
     "id": 15,
@@ -273,7 +273,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/breve.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/breve.png"
   },
   {
     "id": 16,
@@ -293,7 +293,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/raf-coffee.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/raf-coffee.png"
   },
   {
     "id": 17,
@@ -313,7 +313,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/mead-raf.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/mead-raf.png"
   },
   {
     "id": 18,
@@ -329,7 +329,7 @@
         "label": "espresso"
       }
     ],
-    "image": "/assets/cups/vienna-coffee.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/vienna-coffee.png"
   },
   {
     "id": 19,
@@ -345,6 +345,6 @@
         "label": "čokoláda"
       }
     ],
-    "image": "/assets/cups/chocolate-milk.png"
+    "image": "https://cafelora-api-1.onrender.com/assets/cups/chocolate-milk.png"
   }
 ]
