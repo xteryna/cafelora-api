@@ -1,3 +1,25 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();  // Inicializace Express aplikace
+const PORT = process.env.PORT || 4000;
+
+// Middleware
+app.use(bodyParser.json());
+app.use(cors());
+
+// Statické soubory (pro obrázky)
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
+// Cesta k JSON souboru
+const dataPath = path.join(__dirname, 'api/drinks.json');
+
+// Načtení JSON dat
+const getDrinksData = () => JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
+
 // Endpoint pro získání všech nápojů
 app.get('/api/drinks', (req, res) => {
   const drinks = getDrinksData();
@@ -80,4 +102,9 @@ app.delete('/api/drinks/:id', (req, res) => {
   fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
 
   res.json({ message: 'Drink deleted successfully', drink: deletedDrink });
+});
+
+// Start serveru
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
