@@ -87,6 +87,39 @@ app.patch('/api/drinks/:id', (req, res) => {
   res.json({ message: 'Drink updated successfully', drink });
 });
 
+// Endpoint pro aktualizaci celého nápoje podle ID
+app.put('/api/drinks/:id', (req, res) => {
+  const drinks = getDrinksData(); // Načti aktuální data
+  const { id } = req.params;
+  const { name, image, ordered, layers } = req.body;
+
+  // Ověření existence nápoje
+  const drinkIndex = drinks.findIndex((item) => item.id === parseInt(id, 10));
+  if (drinkIndex === -1) {
+    return res.status(404).json({ message: 'Drink not found' });
+  }
+
+  // Ověření všech požadovaných polí
+  if (!name || !image || !Array.isArray(layers) || layers.length === 0) {
+    return res.status(400).json({ message: 'Missing or invalid fields' });
+  }
+
+  // Nahrazení celého záznamu
+  drinks[drinkIndex] = {
+    id: parseInt(id, 10),
+    name,
+    image,
+    ordered: ordered || false,
+    layers,
+  };
+
+  // Uložení změn do souboru
+  fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
+
+  res.json({ message: 'Drink updated successfully', drink: drinks[drinkIndex] });
+});
+
+
 // Endpoint pro smazání konkrétního nápoje
 app.delete('/api/drinks/:id', (req, res) => {
   let drinks = getDrinksData();
