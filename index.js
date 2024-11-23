@@ -42,16 +42,17 @@ app.get('/api/drinks/:id', (req, res) => {
 // Endpoint pro přidání nového nápoje
 app.post('/api/drinks', (req, res) => {
   const drinks = getDrinksData();
-  const { name, image, ordered = false } = req.body;
+  const { name, image, layers, ordered = false } = req.body;
 
-  if (!name || !image) {
-    return res.status(400).json({ message: 'Name and image are required' });
+  if (!name || !image || !layers) {
+    return res.status(400).json({ message: 'Name and image and layers are required' });
   }
 
   const newDrink = {
     id: drinks.length > 0 ? drinks[drinks.length - 1].id + 1 : 1,
     name,
     image,
+    layers,
     ordered
   };
 
