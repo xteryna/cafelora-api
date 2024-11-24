@@ -68,7 +68,7 @@ app.post('/api/drinks', (req, res) => {
 app.patch('/api/drinks/:id', (req, res) => {
   const drinks = getDrinksData();
   const { id } = req.params;
-  const updates = req.body; // Obsahuje aktualizované vlastnosti
+  const updates = req.body;
 
   const drink = drinks.find((item) => item.id === parseInt(id, 10));
   if (!drink) {
@@ -84,16 +84,17 @@ app.patch('/api/drinks/:id', (req, res) => {
   // Uložit zpět do souboru
   fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
 
-  res.json({ message: 'Drink updated successfully', drink });
+  // Vracíme status 204 bez těla
+  res.status(204).send();
 });
+
 
 // Endpoint pro aktualizaci celého nápoje podle ID
 app.put('/api/drinks/:id', (req, res) => {
-  const drinks = getDrinksData(); // Načti aktuální data
+  const drinks = getDrinksData();
   const { id } = req.params;
   const { name, image, ordered, layers } = req.body;
 
-  // Ověření existence nápoje
   const drinkIndex = drinks.findIndex((item) => item.id === parseInt(id, 10));
   if (drinkIndex === -1) {
     return res.status(404).json({ message: 'Drink not found' });
@@ -116,8 +117,10 @@ app.put('/api/drinks/:id', (req, res) => {
   // Uložení změn do souboru
   fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
 
-  res.json({ message: 'Drink updated successfully', drink: drinks[drinkIndex] });
+  // Vracíme status 204 bez těla
+  res.status(204).send();
 });
+
 
 
 // Endpoint pro smazání konkrétního nápoje
@@ -130,13 +133,15 @@ app.delete('/api/drinks/:id', (req, res) => {
     return res.status(404).json({ message: 'Drink not found' });
   }
 
-  const deletedDrink = drinks.splice(drinkIndex, 1);
+  drinks.splice(drinkIndex, 1); // Odstranění nápoje ze seznamu
 
   // Uložit zpět do souboru
   fs.writeFileSync(dataPath, JSON.stringify(drinks, null, 2));
 
-  res.json({ message: 'Drink deleted successfully', drink: deletedDrink });
+  // Odpověď s 204 No Content
+  res.status(204).send();
 });
+
 
 // Start serveru
 app.listen(PORT, () => {
